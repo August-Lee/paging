@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<form  id="form">
+    <input type="text" name="name">
+    <input type="text" name="age">
+    <input type="button" value="submit" id="btn">
+</form>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>年龄</th>
+        </tr>
+        </thead>
+       <tbody>
+
+       </tbody>
+    </table>
+<div style="text-align: center">
+    <ul class="pagination" style="margin: 0 auto;">
+        <li><a href="#">&laquo;</a></li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">&raquo;</a></li>
+    </ul>
+</div>
+</body>
+<script>
+    var html;
+    $(function(){
+        html='';
+       $. ajax({
+            url:'../du',
+            type:'get',
+            data:{page:1},
+            success:(data)=>{
+               $.each(data,function(i,p){
+                   console.log(p);
+                   html+=` <tr>
+                        <td>${p._id}</td>
+                        <td>${p.name}</td>
+                        <td>${p.age}</td>
+                    </tr>`
+               })
+                $('tbody').html(html);
+            }
+        })
+    })
+    $("#btn").click(function () {
+        var data=$("#form").serialize();
+        $. ajax({
+            url:'../postPage',
+            type:'post',
+            data:data,
+            success:(data)=>{
+                location.href=location.href;
+            }
+        })
+    })
+    $('a').click(function(){
+        html='';
+        var a=$(this).text();
+        $. ajax({
+            url:'../du',
+            type:'get',
+            data:{page:a-1},
+            success:(data)=>{
+                $.each(data,function(i,p){
+                    html+=` <tr>
+                        <td>${p._id}</td>
+                        <td>${p.name}</td>
+                        <td>${p.age}</td>
+                    </tr>`
+                })
+                $('tbody').html(html);
+            }
+        })
+    })
+</script>
+</html>
